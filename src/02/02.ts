@@ -7,8 +7,7 @@ async function makeArrayFromFile(filepath: string): Promise<string[]> {
 }
 
 function case1(instructions: string[]): number {
-  let horisontal = 0
-  let depth = 0
+  let [horisontal, depth] = [0, 0]
   for (let instruction of instructions) {
     let spl = instruction.split(' ')
     switch(spl[0]) {
@@ -28,9 +27,7 @@ function case1(instructions: string[]): number {
 }
 
 function case2(instructions: string[]): number {
-  let horisontal = 0
-  let depth = 0
-  let aim = 0
+  let [horisontal, aim, depth] = [0, 0, 0]
   for (let instruction of instructions) {
     let spl = instruction.split(' ')
     switch(spl[0]) {
