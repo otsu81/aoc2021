@@ -28,16 +28,15 @@ function checkIfWon(numbers: number[]): boolean {
   return sums.includes(-5)
 }
 
-function calculateFinalScore(numbers: number[], drawnNumber: number) {
+function calculateFinalScore(numbers: number[], drawnNumber: number): string {
   let sum = numbers
     .slice(0, 25)
     .filter(v => v !== -1)
     .reduce((a, b) => a+b)
-  console.log(sum, drawnNumber, sum * drawnNumber)
+  return `sum: ${sum}, drawnNumber: ${drawnNumber}, magicNumber: ${sum * drawnNumber}`
 }
 
-function part1(boards: string[][], drawNumbers: number[]) {
-
+function makeBoardIntArrays(boards: string[][]): number[][] {
   let boardPotentialWinningCombinations: number[][] = []
   for (let b of boards) {
     let boardVals = b.map(row => row
@@ -48,6 +47,11 @@ function part1(boards: string[][], drawNumbers: number[]) {
     )
     boardPotentialWinningCombinations.push(makeWinningVals(boardVals))
   }
+  return boardPotentialWinningCombinations
+}
+
+function part1(boards: string[][], drawNumbers: number[]): string | undefined {
+  let boardPotentialWinningCombinations = makeBoardIntArrays(boards)
 
   let won = false
   let checkedBoards = [...boardPotentialWinningCombinations]
@@ -61,13 +65,34 @@ function part1(boards: string[][], drawNumbers: number[]) {
     for (let c of checked) {
       won = checkIfWon(c)
       if (won) {
-        console.log(c)
-        console.log(calculateFinalScore(c, n))
-        break
+        return calculateFinalScore(c, n)
       }
     }
     checkedBoards = [...checked]
   } while( !won && drawNumbers.length > 0)
+}
+
+// is it possible to find out which one is slowest without calculating all?
+function part2(boards: string[][], numbers: number[]): string | undefined {
+  const intBoards = makeBoardIntArrays(boards)
+  const movesCounterMap = new Map<number, string>()
+  for (let b of intBoards) {
+    let won = false
+    const nums = [...numbers]
+    let counter = 0
+    do {
+      let n = nums.shift() as number
+      b = markNumber(n, b)
+      if (checkIfWon(b)) {
+        won = true
+        movesCounterMap.set(counter, calculateFinalScore(b, n))
+        break
+      }
+      counter++
+    } while ( !won && nums.length > 0)
+  }
+  const sortedMap = [...movesCounterMap.entries()].sort(([a], [b]) => a - b)
+  return sortedMap.pop()?.toString()
 }
 
 ( async() => {
@@ -75,6 +100,7 @@ function part1(boards: string[][], drawNumbers: number[]) {
   const numbers = input.shift()?.split(',').map(i => parseInt(i)) as number[]
   const boards = input.map(board => board.split('\n'))
 
-  part1(boards, numbers)
+  console.log('part1:', part1(boards, numbers))
+  console.log('part2:', part2(boards, numbers))
 
 })()
