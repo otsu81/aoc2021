@@ -20,29 +20,26 @@ function makeVectors(tuples: string[][][]) {
     let x2 = parseInt(t[1][0])
     let y2 = parseInt(t[1][1])
 
-    // if (x1 == x2 || y1 == y2) {      // comment/uncomment for part 1
-    if (true) {                         // comment/uncomment for part 2
-      let vector = {
-        x: Math.abs(x2 - x1),
-        xd: direction(x2, x1),
-        y: Math.abs(y2 - y1),
-        yd: direction(y2, y1)
+    let vector = {
+      x: Math.abs(x2 - x1),
+      xd: direction(x2, x1),
+      y: Math.abs(y2 - y1),
+      yd: direction(y2, y1)
+    }
+
+    pointsMap = addPoint(pointsMap, `${x1},${y1}`)
+    pointsMap = addPoint(pointsMap, `${x2},${y2}`)
+
+    if (vector.x == vector.y) {
+      for (let x = 1; x < vector.x; x++) {
+        pointsMap = addPoint(pointsMap, `${x1 + x*vector.xd},${y1 + x*vector.yd}`)
       }
-
-      pointsMap = addPoint(pointsMap, `${x1},${y1}`)
-      pointsMap = addPoint(pointsMap, `${x2},${y2}`)
-
-      if (vector.x == vector.y) {
-        for (let x = 1; x < vector.x; x++) {
-          pointsMap = addPoint(pointsMap, `${x1 + x*vector.xd},${y1 + x*vector.yd}`)
-        }
-      } else {
-        for (let x = 1; x < vector.x; x++) {
-          pointsMap = addPoint(pointsMap, `${x1 + x*vector.xd},${y1}`)
-        }
-        for (let y = 1; y < vector.y; y++) {
-          pointsMap = addPoint(pointsMap, `${x1},${y1 + y*vector.yd}`)
-        }
+    } else {
+      for (let x = 1; x < vector.x; x++) {
+        pointsMap = addPoint(pointsMap, `${x1 + x*vector.xd},${y1}`)
+      }
+      for (let y = 1; y < vector.y; y++) {
+        pointsMap = addPoint(pointsMap, `${x1},${y1 + y*vector.yd}`)
       }
     }
   })
@@ -51,7 +48,7 @@ function makeVectors(tuples: string[][][]) {
   pointsMap.forEach(v => {
     if (v > 1) overlappingPoints++
   })
-  console.log(overlappingPoints)
+  return overlappingPoints
 
 }
 
@@ -60,6 +57,9 @@ function makeVectors(tuples: string[][][]) {
   const tuples = input
     .map(row => row.split(' -> ').map(tuple => tuple.split(',')))
 
-  makeVectors(tuples)
+  const part1Tuples = tuples.filter(t => t[0][0] === t[1][0] || t[0][1] == t[1][1])
+
+  console.log('part 1:', makeVectors(part1Tuples))
+  console.log('part 2:', makeVectors(tuples))
 
 })()
