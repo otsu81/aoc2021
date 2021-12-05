@@ -1,5 +1,4 @@
 import fs from 'fs'
-import { consoleTestResultHandler } from 'tslint/lib/test'
 
 const direction = (c1: number, c2: number): number => {
   if (c1 === c2) return 0
