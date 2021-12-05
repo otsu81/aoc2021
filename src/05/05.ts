@@ -20,8 +20,8 @@ function makeVectors(tuples: string[][][]) {
     let x2 = parseInt(t[1][0])
     let y2 = parseInt(t[1][1])
 
-    if (x1 == x2 || y1 == y2) {      // uncomment for part 1
-    // if (true) {                         // uncomment for part 2
+    // if (x1 == x2 || y1 == y2) {      // comment/uncomment for part 1
+    if (true) {                         // comment/uncomment for part 2
       let vector = {
         x: Math.abs(x2 - x1),
         xd: direction(x2, x1),
