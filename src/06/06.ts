@@ -43,7 +43,7 @@ function fishArray(fishCounter: number[], days: number) {
   for (let i = 0; i < days; i++) {
     let todaysFish = fish.shift() as number
     fish.push(todaysFish)
-    fish.splice(6, 1, fish[6]+ todaysFish)
+    fish.splice(6, 1, fish[6] + todaysFish)
   }
 
   console.log(`Fish after ${days} days: `,
